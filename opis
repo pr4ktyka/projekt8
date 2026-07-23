@@ -1,0 +1,79 @@
+Stwórz kompletną platformę e-learningową do nauki programowania z wykorzystaniem PHP, JavaScript, HTML, CSS oraz MySQL. Projekt będzie uruchamiany w środowisku Docker, dlatego kod powinien być uporządkowany i podzielony na logiczne pliki.
+Platforma ma posiadać nowoczesny, estetyczny wygląd z jasnym motywem i niebieskimi akcentami. Czcionka powinna być szeryfowa. Interfejs ma być responsywny i intuicyjny. Nagłówek strony ma być zawsze widoczny podczas przewijania (sticky header). Tytuł strony powinien znajdować się na środku nagłówka, natomiast przyciski (Logowanie, Rejestracja, Profil, Wyloguj) po prawej stronie.
+
+Strona główna,
+powinny znaleźć się:
+krótki opis kursu, liczba lekcji, przewidywany czas ukończenia kursu, przycisk „Rozpocznij naukę”.
+
+W prawym górnym rogu użytkownik może wybrać poziom kursu:
+Podstawowy, Średniozaawansowany, Zaawansowany.
+Każdy poziom zawiera 2 lekcje, czyli łącznie 6 lekcji.
+
+Panel nauki
+Po rozpoczęciu kursu użytkownik przechodzi do panelu nauki.
+Panel powinien być podzielony na dwie części:
+
+Lewa kolumna:
+lista lekcji,
+możliwość oznaczenia lekcji gwiazdką (ulubione),
+po najechaniu myszką element zmienia kolor.
+
+Prawa część:
+treść aktualnej lekcji,
+przyciski „Poprzednia”, „Następna” oraz „Rozwiąż quiz”.
+
+Na samym dole strony ma znajdować się niebieski pasek postępu, pokazujący procent ukończenia całego kursu.
+
+Tematyka kursu
+Poziom podstawowy
+Lekcja 1 – HTML
+Lekcja 2 – CSS
+Poziom średniozaawansowany
+Lekcja 3 – JavaScript
+Lekcja 4 – PHP
+Poziom zaawansowany
+Lekcja 5 – PHP + MySQL
+Lekcja 6 – Logowanie użytkowników i sesje
+
+Każda lekcja kończy się quizem z 5 pytaniami.
+
+Każdy quiz powinien zawierać pytania jednokrotnego wyboru.
+Każde pytanie posiada:
+4 odpowiedzi (A, B, C, D),
+tylko 1 poprawną odpowiedź.
+
+Po zakończeniu quizu wyświetl: wynik w procentach,
+liczbę poprawnych odpowiedzi, informację, czy użytkownik zaliczył quiz (minimum 70%),
+przycisk umożliwiający ponowne rozwiązanie quizu. Logowanie i rejestracja
+
+System powinien umożliwiać:
+rejestrację użytkownika, logowanie,
+wylogowanie, szyfrowanie haseł, wykorzystanie sesji PHP.
+
+Login użytkownika stanowi adres e-mail.
+W systemie powinny istnieć dwie role: użytkownik, administrator.
+
+Profil powinien wyświetlać: adres e-mail, liczbę ukończonych lekcji, średni wynik ze wszystkich quizów,
+liczbę zdobytych punktów, procent ukończenia kursu, listę lekcji oznaczonych gwiazdką. System odznak
+
+Po spełnieniu odpowiednich warunków użytkownik otrzymuje odznaki:
+Pierwsza lekcja – za ukończenie pierwszej lekcji.
+Ukończono poziom podstawowy – po ukończeniu dwóch pierwszych lekcji.
+Wszystkie kursy ukończone – po ukończeniu wszystkich lekcji.
+100% poprawnych odpowiedzi – za uzyskanie maksymalnego wyniku w quizie.
+
+Zdobyte odznaki powinny być widoczne w profilu użytkownika.
+
+Panel administratora
+Administrator powinien posiadać osobny panel.
+
+Panel ma wyświetlać statystyki:liczba wszystkich użytkowników:
+liczba aktywnych użytkowników, liczba ukończonych kursów, średni wynik wszystkich quizów.
+
+Administrator powinien mieć dostęp do tabeli użytkowników zawierającej: adres e-mail, liczbę ukończonych lekcji,
+średni wynik quizów, liczbę zdobytych punktów. Baza danych
+
+ma sie składać z PHP, MySQL, HTML, CSS, JavaScript i Docker
+Architektura oparta na oddzielnych plikach PHP.
+Kod powinien być uporządkowany, opisany komentarzami i łatwy do dalszej rozbudowy.
+Interfejs powinien być nowoczesny, czytelny i responsywny, z płynnymi animacjami oraz estetycznym układem przypominającym profesjonalne platformy e-learningowe.
