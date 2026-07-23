@@ -7,13 +7,20 @@ ob_start();
 
 require_once __DIR__ . '/../src/config/Config.php';
 require_once __DIR__ . '/../src/auth/AuthHandler.php';
+require_once __DIR__ . '/../src/auth/SessionManager.php';
+
+SessionManager::init();
 
 $message = '';
 $messageType = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $auth = new AuthHandler();
-    $result = $auth->register($_POST['email'], $_POST['password'], $_POST['password_confirm']);
+    if (!SessionManager::validateCsrfToken($_POST['csrf_token'] ?? '')) {
+        $result = ['success' => false, 'message' => 'Sesja formularza wygasła. Odśwież stronę i spróbuj ponownie.'];
+    } else {
+        $auth = new AuthHandler();
+        $result = $auth->register($_POST['email'] ?? '', $_POST['password'] ?? '', $_POST['password_confirm'] ?? '');
+    }
     
     if ($result['success']) {
         $message = $result['message'];
@@ -56,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form method="POST" class="card">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(SessionManager::getCsrfToken()); ?>">
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>

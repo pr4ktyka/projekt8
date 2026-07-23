@@ -40,6 +40,7 @@ $questions = $quiz->getQuestions($quizData['id']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?php echo htmlspecialchars(SessionManager::getCsrfToken()); ?>">
     <title>Quiz: <?php echo htmlspecialchars($currentLesson['title']); ?> - orzeszekstudies</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -63,6 +64,7 @@ $questions = $quiz->getQuestions($quizData['id']);
         <form id="quiz-form" method="POST" onsubmit="event.preventDefault(); submitQuiz(); return false;">
             <input type="hidden" name="lesson_id" value="<?php echo $lessonId; ?>">
             <input type="hidden" name="quiz_id" value="<?php echo $quizData['id']; ?>">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(SessionManager::getCsrfToken()); ?>">
 
             <?php foreach ($questions as $index => $question): ?>
                 <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e0e0e0;">

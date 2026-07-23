@@ -20,8 +20,12 @@ $message = '';
 $messageType = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!SessionManager::validateCsrfToken($_POST['csrf_token'] ?? '')) {
+        $message = 'Sesja formularza wygasła. Odśwież stronę i spróbuj ponownie.';
+        $messageType = 'error';
+    } else {
     $auth = new AuthHandler();
-    $result = $auth->login($_POST['email'], $_POST['password']);
+    $result = $auth->login($_POST['email'] ?? '', $_POST['password'] ?? '');
     
     if ($result['success']) {
         header('Location: /');
@@ -29,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $message = $result['message'];
         $messageType = 'error';
+    }
     }
 }
 
@@ -70,6 +75,7 @@ $msg = $_GET['msg'] ?? '';
         <?php endif; ?>
 
         <form method="POST" class="card">
+            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(SessionManager::getCsrfToken()); ?>">
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required autofocus>

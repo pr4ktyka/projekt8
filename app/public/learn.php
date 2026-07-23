@@ -20,7 +20,16 @@ $userId = SessionManager::getCurrentUserId();
 $lesson = new Lesson();
 $user = new User();
 
-$lessonId = $_GET['lesson'] ?? 1;
+$searchQuery = trim($_GET['q'] ?? '');
+$levelFilter = isset($_GET['level']) ? intval($_GET['level']) : 0;
+$sortFilter = $_GET['sort'] ?? 'default';
+$allowedSorts = ['default', 'title_asc', 'title_desc', 'level_desc'];
+
+if (!in_array($sortFilter, $allowedSorts, true)) {
+    $sortFilter = 'default';
+}
+
+$lessonId = isset($_GET['lesson']) ? intval($_GET['lesson']) : 1;
 $currentLesson = $lesson->getLesson($lessonId);
 
 if (!$currentLesson) {
@@ -28,7 +37,13 @@ if (!$currentLesson) {
     exit;
 }
 
-$allLessons = $lesson->getAllLessons();
+$levels = $lesson->getAllLevels();
+$allLessons = $lesson->searchLessons($searchQuery, $levelFilter, $sortFilter);
+
+if (empty($allLessons)) {
+    $allLessons = $lesson->getAllLessons();
+}
+
 $prevLesson = $lesson->getPreviousLesson($lessonId);
 $nextLesson = $lesson->getNextLesson($lessonId);
 $userProfile = $user->getProfile($userId);
@@ -38,6 +53,7 @@ $userProfile = $user->getProfile($userId);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?php echo htmlspecialchars(SessionManager::getCsrfToken()); ?>">
     <title><?php echo htmlspecialchars($currentLesson['title']); ?> - orzeszekstudies</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -57,6 +73,48 @@ $userProfile = $user->getProfile($userId);
     <div class="learning-container">
         <div class="lesson-sidebar">
             <h3>Lekcje</h3>
+            <form method="GET" action="/learn.php" class="lesson-filters">
+                <input type="hidden" name="lesson" value="<?php echo intval($lessonId); ?>">
+
+                <div class="form-group">
+                    <input
+                        type="text"
+                        name="q"
+                        placeholder="Szukaj lekcji..."
+                        value="<?php echo htmlspecialchars($searchQuery); ?>"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <select name="level">
+                        <option value="0">Wszystkie poziomy</option>
+                        <?php foreach ($levels as $level): ?>
+                            <option value="<?php echo intval($level['id']); ?>" <?php echo ($levelFilter === intval($level['id'])) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($level['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <select name="sort">
+                        <option value="default" <?php echo ($sortFilter === 'default') ? 'selected' : ''; ?>>Domyślne sortowanie</option>
+                        <option value="title_asc" <?php echo ($sortFilter === 'title_asc') ? 'selected' : ''; ?>>Tytuł A-Z</option>
+                        <option value="title_desc" <?php echo ($sortFilter === 'title_desc') ? 'selected' : ''; ?>>Tytuł Z-A</option>
+                        <option value="level_desc" <?php echo ($sortFilter === 'level_desc') ? 'selected' : ''; ?>>Poziom: od zaawansowanego</option>
+                    </select>
+                </div>
+
+                <div class="lesson-filters-actions">
+                    <button type="submit" class="btn btn-small btn-primary">Filtruj</button>
+                    <a href="/learn.php?lesson=<?php echo intval($lessonId); ?>" class="btn btn-small btn-secondary">Wyczyść</a>
+                </div>
+            </form>
+
+            <div class="lesson-results-count">
+                Znaleziono: <strong><?php echo count($allLessons); ?></strong>
+            </div>
+
             <ul class="lesson-list">
                 <?php foreach ($allLessons as $les): ?>
                     <li class="<?php echo ($les['id'] == $lessonId) ? 'active' : ''; ?>"

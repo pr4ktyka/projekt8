@@ -71,5 +71,22 @@ class SessionManager {
         self::init();
         session_regenerate_id(true);
     }
+
+    public static function getCsrfToken() {
+        self::init();
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+        return $_SESSION['csrf_token'];
+    }
+
+    public static function validateCsrfToken($token) {
+        self::init();
+        if (!is_string($token) || $token === '') {
+            return false;
+        }
+
+        return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+    }
 }
 ?>

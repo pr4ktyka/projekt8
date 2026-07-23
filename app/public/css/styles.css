@@ -282,6 +282,36 @@ p {
     margin-top: 0;
 }
 
+.lesson-filters {
+    margin: 15px 0 10px;
+}
+
+.lesson-filters .form-group {
+    margin-bottom: 10px;
+}
+
+.lesson-filters .form-group input,
+.lesson-filters .form-group select {
+    padding: 9px 10px;
+    font-size: 13px;
+}
+
+.lesson-filters-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.lesson-filters-actions .btn {
+    text-align: center;
+    padding: 8px 10px;
+}
+
+.lesson-results-count {
+    margin: 10px 0 12px;
+    font-size: 13px;
+    color: #666;
+}
+
 .lesson-list {
     list-style: none;
 }

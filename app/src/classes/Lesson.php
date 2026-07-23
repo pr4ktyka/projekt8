@@ -37,6 +37,72 @@ class Lesson {
     }
 
     /**
+     * Pobranie wszystkich poziomów lekcji
+     */
+    public function getAllLevels() {
+        try {
+            $stmt = $this->db->query('SELECT id, name FROM lesson_levels ORDER BY id');
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    /**
+     * Wyszukiwanie i filtrowanie lekcji
+     */
+    public function searchLessons($query = '', $levelId = 0, $sort = 'default', $isAdmin = false) {
+        try {
+            $sql = "
+                SELECT l.*, ll.name as level_name
+                FROM lessons l
+                JOIN lesson_levels ll ON l.level_id = ll.id
+                WHERE 1=1
+            ";
+
+            $params = [];
+
+            if (!$isAdmin) {
+                $sql .= " AND l.status = 'published'";
+            }
+
+            if ($query !== '') {
+                $sql .= ' AND (l.title LIKE ? OR l.content LIKE ? OR ll.name LIKE ?)';
+                $searchTerm = '%' . $query . '%';
+                $params[] = $searchTerm;
+                $params[] = $searchTerm;
+                $params[] = $searchTerm;
+            }
+
+            if ($levelId > 0) {
+                $sql .= ' AND l.level_id = ?';
+                $params[] = $levelId;
+            }
+
+            switch ($sort) {
+                case 'title_asc':
+                    $sql .= ' ORDER BY l.title ASC';
+                    break;
+                case 'title_desc':
+                    $sql .= ' ORDER BY l.title DESC';
+                    break;
+                case 'level_desc':
+                    $sql .= ' ORDER BY l.level_id DESC, l.order_in_level';
+                    break;
+                default:
+                    $sql .= ' ORDER BY l.level_id, l.order_in_level';
+                    break;
+            }
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    /**
      * Pobranie lekcji po poziomie
      */
     public function getLessonsByLevel($levelId, $isAdmin = false) {

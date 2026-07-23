@@ -19,9 +19,17 @@ if (!SessionManager::isLoggedIn()) {
 
 $userId = SessionManager::getCurrentUserId();
 $data = json_decode(file_get_contents('php://input'), true);
-$lessonId = $data['lesson_id'] ?? null;
+$csrfToken = is_array($data) ? ($data['csrf_token'] ?? '') : '';
+$lessonId = is_array($data) ? intval($data['lesson_id'] ?? 0) : 0;
 
-if (!$lessonId) {
+if (!SessionManager::validateCsrfToken($csrfToken)) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Nieprawidłowy token CSRF']);
+    exit;
+}
+
+if ($lessonId <= 0) {
+    http_response_code(422);
     echo json_encode(['success' => false, 'message' => 'Brakujące dane']);
     exit;
 }

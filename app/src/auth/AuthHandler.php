@@ -19,6 +19,14 @@ class AuthHandler {
      * Rejestracja użytkownika
      */
     public function register($email, $password, $passwordConfirm) {
+        $email = trim((string) $email);
+        $password = (string) $password;
+        $passwordConfirm = (string) $passwordConfirm;
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return ['success' => false, 'message' => 'Nieprawidłowy email'];
+        }
+
         if ($password !== $passwordConfirm) {
             return ['success' => false, 'message' => 'Hasła nie są identyczne'];
         }
@@ -35,6 +43,13 @@ class AuthHandler {
      * Logowanie użytkownika
      */
     public function login($email, $password) {
+        $email = trim((string) $email);
+        $password = (string) $password;
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return ['success' => false, 'message' => 'Nieprawidłowy email'];
+        }
+
         $result = $this->user->login($email, $password);
         
         if ($result['success']) {

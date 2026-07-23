@@ -30,9 +30,11 @@ CREATE TABLE lessons (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
     level_id INT NOT NULL,
+    status ENUM('draft', 'published') NOT NULL DEFAULT 'published',
     content LONGTEXT NOT NULL,
     order_in_level INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX (status),
     FOREIGN KEY (level_id) REFERENCES lesson_levels(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

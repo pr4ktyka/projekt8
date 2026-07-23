@@ -6,13 +6,15 @@
 // Przełączanie ulubionych
 function toggleFavorite(lessonId, element) {
     const starIcon = element.querySelector('.lesson-star');
+    const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
     
     fetch('/api/toggle-favorite.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ lesson_id: lessonId })
+        body: JSON.stringify({ lesson_id: lessonId, csrf_token: csrfToken })
     })
     .then(response => response.json())
     .then(data => {
@@ -25,7 +27,9 @@ function toggleFavorite(lessonId, element) {
 
 // Przełączanie lekcji
 function selectLesson(lessonId) {
-    window.location.href = '/learn.php?lesson=' + lessonId;
+    const params = new URLSearchParams(window.location.search);
+    params.set('lesson', lessonId);
+    window.location.href = '/learn.php?' + params.toString();
 }
 
 // Obliczanie wyniku quizu

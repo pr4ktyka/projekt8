@@ -20,10 +20,18 @@ if (!SessionManager::isLoggedIn()) {
 }
 
 $userId = SessionManager::getCurrentUserId();
-$quizId = $_POST['quiz_id'] ?? null;
-$lessonId = $_POST['lesson_id'] ?? null;
+$csrfToken = $_POST['csrf_token'] ?? '';
+$quizId = isset($_POST['quiz_id']) ? intval($_POST['quiz_id']) : 0;
+$lessonId = isset($_POST['lesson_id']) ? intval($_POST['lesson_id']) : 0;
 
-if (!$quizId || !$lessonId) {
+if (!SessionManager::validateCsrfToken($csrfToken)) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Nieprawidłowy token CSRF']);
+    exit;
+}
+
+if ($quizId <= 0 || $lessonId <= 0) {
+    http_response_code(422);
     echo json_encode(['success' => false, 'message' => 'Brakujące dane']);
     exit;
 }
@@ -36,9 +44,18 @@ $badge = new Badge();
 $answers = [];
 foreach ($_POST as $key => $value) {
     if (strpos($key, 'question_') === 0) {
-        $qId = substr($key, 9);
-        $answers[$qId] = $value;
+        $qId = intval(substr($key, 9));
+        $answerId = intval($value);
+        if ($qId > 0 && $answerId > 0) {
+            $answers[$qId] = $answerId;
+        }
     }
+}
+
+if (empty($answers)) {
+    http_response_code(422);
+    echo json_encode(['success' => false, 'message' => 'Brak odpowiedzi quizowych']);
+    exit;
 }
 
 // Oblicz wynik
