@@ -92,7 +92,12 @@ $users = $stmt->fetchAll();
     </div>
 
     <div class="card" style="margin-top: 30px;">
-        <h3 style="margin-top: 0;">Lista użytkowników</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin-top: 0;">Lista użytkowników</h3>
+            <a href="/admin/lessons.php" class="btn btn-primary" style="padding: 10px 20px;">
+                📚 Zarządzaj lekcjami
+            </a>
+        </div>
 
         <?php if (empty($users)): ?>
             <p>Brak użytkowników</p>

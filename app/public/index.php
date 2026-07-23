@@ -14,7 +14,8 @@ require_once __DIR__ . '/../src/auth/SessionManager.php';
 SessionManager::init();
 
 $lesson = new Lesson();
-$allLessons = $lesson->getAllLessons();
+$isAdmin = SessionManager::isAdmin();
+$allLessons = $lesson->getAllLessons($isAdmin);
 
 // Pogrupuj lekcje po poziomach
 $lessonsByLevel = [];
@@ -77,7 +78,11 @@ foreach ($allLessons as $les) {
                     <span>📚 <?php echo htmlspecialchars($les['level_name']); ?></span>
                     <span>⏱️ ~30 min</span>
                 </div>
-                <p><?php echo substr(strip_tags($les['content']), 0, 100); ?>...</p>
+                <p><?php 
+                    // Usuń h2 header i bierz tylko tekst z paragrafów
+                    $cleanContent = preg_replace('/<h[2-3][^>]*>.*?<\/h[2-3]>/is', '', $les['content']);
+                    echo substr(strip_tags($cleanContent), 0, 100); 
+                    ?>...</p>
                 <?php if (SessionManager::isLoggedIn()): ?>
                     <button class="btn btn-primary" onclick="window.location.href='/learn.php?lesson=<?php echo $les['id']; ?>'">
                         Rozpocznij naukę
