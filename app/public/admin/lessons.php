@@ -286,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         padding: 15px;
         border-radius: 4px;
         margin-bottom: 15px;
-        border-left: 4px solid #65e610;
+        border-left: 4px solid #2d5016;
     }
 
     .lesson-item.draft {
