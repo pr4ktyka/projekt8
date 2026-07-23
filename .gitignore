@@ -1,0 +1,53 @@
+# Zmienne środowiskowe
+.env
+.env.local
+.env.*.local
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logi
+*.log
+logs/
+
+# Tymczasowe pliki
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Node (jeśli będzie)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Composer (jeśli będzie)
+vendor/
+composer.lock
+
+# Cache
+__pycache__/
+*.pyc
+.cache/
+.pytest_cache/
+
+# Sesje PHP
+session/
+sessions/
+
+# Baza danych
+*.sql.gz
+backup/
+
+# Build
+dist/
+build/
