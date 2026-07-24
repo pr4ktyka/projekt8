@@ -5,9 +5,21 @@
  */
 
 header('Content-Type: application/json');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
 
 require_once __DIR__ . '/../../src/config/Config.php';
 require_once __DIR__ . '/../../src/classes/Lesson.php';
+require_once __DIR__ . '/../../src/auth/SessionManager.php';
+
+SessionManager::init();
+
+if (!SessionManager::isLoggedIn()) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Brak autoryzacji']);
+    exit;
+}
 
 $lessonId = $_GET['id'] ?? 0;
 

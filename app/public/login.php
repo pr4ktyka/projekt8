@@ -45,6 +45,7 @@ $msg = $_GET['msg'] ?? '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logowanie - orzeszekstudies</title>
+    <?php require __DIR__ . '/pwa-head.php'; ?>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
@@ -100,6 +101,8 @@ $msg = $_GET['msg'] ?? '';
 <div class="progress-bar-container">
     <div class="progress-bar" style="width: 0%"></div>
 </div>
+
+<?php require __DIR__ . '/pwa-register.php'; ?>
 
 </body>
 </html>

@@ -13,6 +13,11 @@ require_once __DIR__ . '/../../src/classes/Quiz.php';
 require_once __DIR__ . '/../../src/config/Database.php';
 
 AuthHandler::requireAdmin();
+
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
+
 SessionManager::init();
 
 $lesson = new Lesson();
@@ -233,6 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zarządzanie lekcjami - orzeszekstudies</title>
+    <?php require __DIR__ . '/../pwa-head.php'; ?>
     <link rel="stylesheet" href="/css/styles.css">
     <style>
     .lessons-grid {
@@ -798,6 +804,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     </script>
+    <?php require __DIR__ . '/../pwa-register.php'; ?>
 
 </body>
 

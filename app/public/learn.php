@@ -14,6 +14,10 @@ require_once __DIR__ . '/../src/classes/User.php';
 
 AuthHandler::requireLogin();
 
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
+
 SessionManager::init();
 $userId = SessionManager::getCurrentUserId();
 
@@ -55,6 +59,7 @@ $userProfile = $user->getProfile($userId);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo htmlspecialchars(SessionManager::getCsrfToken()); ?>">
     <title><?php echo htmlspecialchars($currentLesson['title']); ?> - orzeszekstudies</title>
+    <?php require __DIR__ . '/pwa-head.php'; ?>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
@@ -164,6 +169,7 @@ $userProfile = $user->getProfile($userId);
 </div>
 
 <script src="/js/main.js"></script>
+<?php require __DIR__ . '/pwa-register.php'; ?>
 
 </body>
 </html>

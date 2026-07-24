@@ -12,6 +12,10 @@ require_once __DIR__ . '/../src/classes/User.php';
 
 AuthHandler::requireLogin();
 
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
+
 SessionManager::init();
 $userId = SessionManager::getCurrentUserId();
 
@@ -26,6 +30,7 @@ $favorites = $user->getFavorites($userId);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mój profil - orzeszekstudies</title>
+    <?php require __DIR__ . '/pwa-head.php'; ?>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
@@ -123,6 +128,8 @@ $favorites = $user->getFavorites($userId);
 <div class="progress-bar-container">
     <div class="progress-bar" style="width: 100%"></div>
 </div>
+
+<?php require __DIR__ . '/pwa-register.php'; ?>
 
 </body>
 </html>

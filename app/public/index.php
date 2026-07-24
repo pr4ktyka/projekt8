@@ -29,6 +29,7 @@ foreach ($allLessons as $les) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>orzeszekstudies - Platforma e-learningowa</title>
+    <?php require __DIR__ . '/pwa-head.php'; ?>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
@@ -103,6 +104,7 @@ foreach ($allLessons as $les) {
 </div>
 
 <script src="/js/main.js"></script>
+<?php require __DIR__ . '/pwa-register.php'; ?>
 
 </body>
 </html>
